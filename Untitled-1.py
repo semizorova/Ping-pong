@@ -38,7 +38,7 @@ def qvest():
     app = QApplication([])
     main_win = QWidget()
     main_win.setWindowTitle("Memory Card")
-    text = QLabel('Первое професиональное соревнование в:?')#надпись
+    text = QLabel('Первое професиональное соревнование в:')#надпись
     btn = QPushButton('Ответить')
     RadioGroupBox = QGroupBox("Варианты ответов" )
     rbtn_1 = QRadioButton( '1900' )
@@ -84,7 +84,7 @@ def qvest():
     def show_result():
         RadioGroupBox.hide()
         AnswerGroupBox.show()
-        btn.setText("Следующий вопрос")
+        btn.setText("К игре")
     def show_question():
         RadioGroupBox.show()
         AnswerGroupBox.hide()
@@ -117,18 +117,18 @@ def qvest():
         text.setText(q.question)
         rbtne_2.setText(q.right_answer)
         show_question()
-    q = Question('Импровизация?','ТНТ','СТС','Пятница','Первый')
+    q = Question('Первое професиональное соревнование в:','1900','1901','1910','1905')
     ask(q)
     question_list = []
     q1 = Question(
-        'Верховный Бог из скандинавской мифологии?','Один',
-        'Зевс','Геркулес','Аид')
+        'Самая длинная партия в пинг-понг:(часы)','146',
+        '140','136','112')
     q2 = Question(
-        'Сколько раз земля пройдёт вокруг своей оси за 1440 минут','1',
-        '3','5','2')
+        'Во время игры шар может разгоняться до:','170 км/ч',
+        '100 км/ч','120 км/ч',' 150 км/ч')
     q3 = Question(
-        'Сколько персонажей погибли в саге "Игра Престолов"?','6887',
-        '7886','6886','7000')
+        'Этот вид спорта внесён в список Олимпийских игр с:','1988',
+        '1950','1910','1998')
 
     question_list.append(q1)
     question_list.append(q2)
@@ -165,15 +165,16 @@ def qvest():
 
 speed_x = 3
 speed_y = 3
-
+score1 = 0
+score2 = 0
 clock = time.Clock()
 FPS = 60
 
 font.init()
 font1 = font.SysFont(None, 70)
-lose_1 = font1.render("YOU 1 LOSE!!!",1,(255,0,0))
-lose_2 = font1.render("YOU 2 LOSE!!!",1,(255,0,0))
-
+font2 = font.SysFont(None, 50)
+text1 = font2.render(str(score1)+":",1,(255,0,0))
+text2 = font2.render(str(score2),1,(255,0,0))
 pin = GameSprite("ball.png",200,200,4,50,50)
 rack_1 = Player("fon.jpg",30,200,4,30,150)
 rack_2 = Player("fon.jpg",520,200,4,30,150)
@@ -190,6 +191,8 @@ while game:
         
         pin.rect.x += speed_x
         pin.rect.y += speed_y
+        window.blit(text1,(265,80))
+        window.blit(text2,(295,80))
 
         pin.reset()
         rack_1.reset()
@@ -199,10 +202,14 @@ while game:
         if pin.rect.y > 450 or pin.rect.y < 0:
             speed_y *= -1
         if pin.rect.x > 600:
-            window.blit(lose_2,(180,20))
             qvest()
-        if pin.rect.x < 0:
-            window.blit(lose_1,(180,200))
+            score2 += 1
+            pin.kill()
+            pin.reset()
+        if pin.rect.x < -50:
             qvest()
+            score1 += 1
+            pin.kill()
+            pin.reset()
     display.update()
     clock.tick(FPS)
