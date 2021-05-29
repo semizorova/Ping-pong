@@ -191,9 +191,7 @@ while game:
         
         pin.rect.x += speed_x
         pin.rect.y += speed_y
-        window.blit(text1,(265,80))
-        window.blit(text2,(295,80))
-
+        
         pin.reset()
         rack_1.reset()
         rack_2.reset()
@@ -202,14 +200,21 @@ while game:
         if pin.rect.y > 450 or pin.rect.y < 0:
             speed_y *= -1
         if pin.rect.x > 600:
-            qvest()
+            #qvest()
             score2 += 1
-            pin.kill()
-            pin.reset()
+            
+            pin.rect.x=300
+        
         if pin.rect.x < -50:
-            qvest()
+            #qvest()
             score1 += 1
-            pin.kill()
-            pin.reset()
+            
+            pin.rect.x=300
+            
+    text1 = font2.render(str(score1)+":",1,(255,0,0)) 
+    window.blit(text1,(265,80))
+    text2 = font2.render(str(score2),1,(255,0,0))
+    window.blit(text2,(295,80))
+
     display.update()
     clock.tick(FPS)
